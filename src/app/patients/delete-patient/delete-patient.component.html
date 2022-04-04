@@ -1,0 +1,16 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title text-danger" id="modal-basic-title">Deleting Patient !</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="d('dismiss')"></button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete the patient <span class="fw-bold text-decoration-underline">
+                <app-deltails [patient]="patient"></app-deltails>
+            </span> ?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" (click)="c('delete confirmed')">Delete</button>
+    </div>
+</ng-template>
+<div class="btn btn-outline-danger m-1" (click)="open(content)" pla cement="top" ngbTooltip="Click to Delete"
+    tooltipClass=""> <i class="fs-5 bi bi-trash"></i> </div>

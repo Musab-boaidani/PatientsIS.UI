@@ -1,0 +1,120 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Create New Patient </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="d('canse')"></button>
+    </div>
+    <!--start modal-body -->
+    <div class="modal-body">
+        <div *ngIf="err" style="white-space: pre-line" class="text-danger alert alert-danger">{{err}}</div>
+        <form id="addfrom" class="row g-3" [formGroup]="addFrom" (ngSubmit)="addFromsubmit()" #form="ngForm">
+            <h3>Personal Info</h3>
+            <div class="col-md-6">
+                <label for="name" class="form-label">Name</label>
+                <input required formControlName="name" type="text" class="form-control" id="name" name="name"
+                    placeholder="Ex. Elon musk">
+            </div>
+            <div class="col-md-6">
+                <label for="birthdate" class="form-label">Birthdate</label>
+                <input required formControlName="birthdate" type="date" class="form-control" id="birthdate"
+                    name="birthdate">
+            </div>
+            <div class="col-md-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select formControlName="gender" class="form-select" id="gender" name="gender">
+                    <option [ngValue]=0>Male</option>
+                    <option [ngValue]=1>Female</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="fileNo" class="form-label">FileNo</label>
+                <input required formControlName="fileNo" type="number" class="form-control" id="fileNo" name="fileNo">
+            </div>
+            <div class="col-md-6">
+                <label for="firstVisitDate" class="form-label">First Visit Date</label>
+                <input required formControlName="firstVisitDate" type="date" class="form-control" id="firstVisitDate"
+                    name="firstVisitDate">
+            </div>
+
+            <div class="col-md-6">
+                <label for="citizenId" class="form-label">Citizen Id</label>
+                <input required formControlName="citizenId" type="text" class="form-control" id="citizenId"
+                    name="citizenId">
+            </div>
+
+            <div class="col-md-6">
+                <label for="natinality" class="form-label">Natinality</label>
+                <input required formControlName="natinality" type="text" class="form-control" id="natinality"
+                    name="natinality" Placeholder="Ex. American">
+            </div>
+            <div class="col-md-6">
+                <label for="phoneNumber" class="form-label">PhoneNumber</label>
+                <input required formControlName="phoneNumber" type="text" class="form-control" id="phoneNumber"
+                    name="phoneNumber" Placeholder="Ex. +1 123 456 7890">
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input required formControlName="email" type="email" class="form-control" id="email" name="email"
+                    Placeholder="Ex. Examlpe@gmail.com">
+            </div>
+
+            <hr />
+            <h3>Adress Info</h3>
+
+            <div class="col-md-6">
+                <label for="country" class="form-label">Country</label>
+                <input required formControlName="country" type="text" class="form-control" id="country" name="country"
+                    Placeholder="Ex. America">
+            </div>
+            <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input required formControlName="city" type="text" class="form-control" id="city" name="city"
+                    Placeholder="Ex. New York">
+            </div>
+
+            <div class="col-12">
+                <label for="street" class="form-label">Street</label>
+                <input required formControlName="street" type="text" class="form-control" id="street" name="street"
+                    Placeholder="Ex. Victory Boulevard">
+            </div>
+            <div class="col-12">
+                <label for="address1" class="form-label">Address 1</label>
+                <input required formControlName="address1" type="text" class="form-control" id="address1"
+                    name="address1" Placeholder="Ex. 1234 Main St">
+            </div>
+            <div class="col-12">
+                <label for="address2" class="form-label">Address 2</label>
+                <input required formControlName="address2" type="text" class="form-control" id="address2"
+                    name="address2" placeholder="Apartment, studio, or floor">
+            </div>
+
+            <hr />
+            <h3>Contact Person Info</h3>
+            <div class="col-md-6">
+                <label for="contactPerson" class="form-label">Contact Person</label>
+                <input required formControlName="contactPerson" type="text" class="form-control" id="contactPerson"
+                    name="contactPerson">
+            </div>
+            <div class="col-md-6">
+                <label for="contactPhone" class="form-label">Contact Phone</label>
+                <input required formControlName="contactPhone" type="text" class="form-control" id="contactPhone"
+                    name="contactPhone" Placeholder="Ex. +1 123 456 7890">
+            </div>
+            <div class="col-md-6">
+                <label for="contactRelation" class="form-label">Contact Relation</label>
+                <input required formControlName="contactRelation" type="text" class="form-control" id="contactRelation"
+                    name="contactRelation">
+            </div>
+
+        </form>
+    </div>
+    <!--end modal-body (click)="c('Create')"  [disabled]="form.invalid" -->
+
+    <div class="modal-footer">
+        <button class="btn btn-outline-warning" (click)="clearForm()">Clear</button>
+        <button type="submit" form="addfrom" class="btn btn-lg btn-outline-primary">Create</button>
+
+    </div>
+</ng-template>
+<button type="button" class="btn btn-outline-success" (click)="open(content)">
+    <i class="bi bi-person-plus "></i><span> Add Patient</span>
+</button>
