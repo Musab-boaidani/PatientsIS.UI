@@ -53,7 +53,6 @@ export class UpdatePatientComponent implements OnInit {
     recordCreationDate: new FormControl(),
   });
   updateFromsubmit() {
-    console.log(this.updateFrom.value as updatePatient);
     this.service
       .UpdatePatient(this.updateFrom.value as updatePatient)
       .subscribe({
