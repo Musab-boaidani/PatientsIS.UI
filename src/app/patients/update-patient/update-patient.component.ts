@@ -64,7 +64,7 @@ export class UpdatePatientComponent implements OnInit {
           for (let err in e.error.errors) {
             this.err += ' - ' + err + '\n';
           }
-          this.toastr.error('', 'Error while Updating', {
+          this.toastr.error('', 'Error while Editing', {
             timeOut: 3000,
           });
         },
@@ -72,7 +72,7 @@ export class UpdatePatientComponent implements OnInit {
         complete: () => {
           this.err = '';
           this.updateModal.close();
-          this.toastr.success('Updated successfuly');
+          this.toastr.success('Edited successfuly');
           this.refreshList.emit();
         },
       });
