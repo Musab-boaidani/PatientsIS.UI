@@ -4,7 +4,6 @@ import { Patient } from './patients/patient.model';
 import { addPatient } from './patients/add-patient/add-patient.model';
 import { updatePatient } from './patients/update-patient/update-patient.model';
 import { catchError, lastValueFrom, map, Observable, tap } from 'rxjs';
-import { Pager } from './Pager.model';
 
 @Injectable({
   providedIn: 'root',

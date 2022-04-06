@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Patient } from './patient.model';
 import { PatientsAPIService } from '../patients-api.service';
-import { from, Observable } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
+import { Pager } from '../Pager.model';
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html',
@@ -17,7 +15,7 @@ export class PatientsComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   patients!: Patient[] | null;
-  pager: any = null;
+  pager!: Pager;
 
   constructor(public service: PatientsAPIService) {}
   collaps() {
