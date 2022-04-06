@@ -29,6 +29,7 @@ export class AddPatientComponent implements OnInit {
   }
   err!: string;
   @Output() refreshList = new EventEmitter();
+
   addFrom = new FormGroup({
     name: new FormControl(),
     birthdate: new FormControl(this.formatDate(new Date()), {

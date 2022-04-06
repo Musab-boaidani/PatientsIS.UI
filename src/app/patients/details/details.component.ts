@@ -9,6 +9,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DetailsComponent implements OnInit {
   @Input() patient: any;
+  @Input()
+  highLightValue!: string;
   constructor(
     public activeModal: NgbActiveModal,
     private modalService: NgbModal

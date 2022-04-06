@@ -192,5 +192,6 @@
         <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
     </div>
 </ng-template>
-<span role="button" (click)="open(content)" placement="top"
-    ngbTooltip="Click to see all details">{{patient.name}}</span>
+
+<ngb-highlight role="button" (click)="open(content)" placement="top" ngbTooltip="Click to see all details"
+    [result]="patient.name" [term]="highLightValue"></ngb-highlight>

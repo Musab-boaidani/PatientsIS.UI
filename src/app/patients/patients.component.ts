@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Patient } from './patient.model';
 import { PatientsAPIService } from '../patients-api.service';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 @Component({
@@ -16,9 +16,18 @@ export class PatientsComponent implements OnInit {
   PhoneSQ: any;
   page: number = 1;
   pageSize: number = 5;
-  patients!: Observable<Patient[]>;
+  patients!: Patient[] | null;
+  pager: any = null;
 
   constructor(public service: PatientsAPIService) {}
+  collaps() {
+    this.isCollapsed = !this.isCollapsed;
+    this.NameSQ = null;
+    this.FileNoSQ = null;
+    this.PhoneSQ = null;
+    this.page = 1;
+    this.refreshList();
+  }
   search() {
     this.page = 1;
     this.refreshList();
@@ -31,13 +40,18 @@ export class PatientsComponent implements OnInit {
     this.refreshList();
   }
   refreshList() {
-    this.patients = this.service.GetPatientsList(
-      this.NameSQ,
-      this.FileNoSQ,
-      this.PhoneSQ,
-      this.page,
-      this.pageSize
-    );
+    this.service
+      .GetPatientsList(
+        this.NameSQ,
+        this.FileNoSQ,
+        this.PhoneSQ,
+        this.page,
+        this.pageSize
+      )
+      ?.subscribe((res) => {
+        this.patients = res.body;
+        this.pager = JSON.parse(res.headers.get('X-Pager') as string);
+      });
   }
   changePage(pageNo: number) {
     this.page = pageNo;

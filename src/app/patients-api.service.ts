@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Patient } from './patients/patient.model';
 import { addPatient } from './patients/add-patient/add-patient.model';
 import { updatePatient } from './patients/update-patient/update-patient.model';
-import { catchError, map, Observable, tap } from 'rxjs';
+import { catchError, lastValueFrom, map, Observable, tap } from 'rxjs';
 import { Pager } from './Pager.model';
 
 @Injectable({
@@ -12,7 +12,6 @@ import { Pager } from './Pager.model';
 export class PatientsAPIService {
   url = 'https://localhost:5001/api/Patient';
   headerProperty: any;
-  pager: any = null;
 
   constructor(private http: HttpClient) {}
 
@@ -41,12 +40,7 @@ export class PatientsAPIService {
 
     geturl += '&PageSize=' + PageSize;
 
-    this.http
-      .get<Patient[]>(geturl, { observe: 'response' })
-      .subscribe((res) => {
-        this.pager = JSON.parse(res.headers.get('X-Pager') as string);
-      });
-    return this.http.get<Patient[]>(geturl);
+    return this.http.get<Patient[]>(geturl, { observe: 'response' });
   }
 
   AddPatient(p: addPatient) {

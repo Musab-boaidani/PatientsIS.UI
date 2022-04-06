@@ -5,7 +5,7 @@
     <app-add-patient (refreshList)="refreshList()"> </app-add-patient>
 
     <p>
-        <button type="button" class="btn btn-outline-primary" (click)="collapse.toggle()">
+        <button type="button" class="btn btn-outline-primary" (click)=" collaps()">
             <i class="bi bi-search"></i> Search
         </button>
     </p>
@@ -13,7 +13,7 @@
 
 </div>
 
-<div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+<div [(ngbCollapse)]="isCollapsed">
     <div class="card">
         <div class="card-body">
             <form class="row">
@@ -36,8 +36,7 @@
                 </div>
                 <div class=" col-1">
                     <label class="form-label">Reset</label>
-                    <button class="btn btn-outline-danger form-control" (click)="collapse.toggle()"
-                        (click)="clearSearch()">
+                    <button class="btn btn-outline-danger form-control" (click)="clearSearch()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
                 </div>
@@ -47,7 +46,8 @@
         </div>
     </div>
 </div>
-<table class="table  table-striped" *ngIf="(patients|async); else loading">
+
+<table class="table  table-striped" *ngIf="(patients); else loading">
 
     <thead>
         <tr>
@@ -62,14 +62,20 @@
     <tbody>
 
 
-        <tr *ngFor="let p of patients|async">
+        <tr *ngFor="let p of patients">
             <td>
-                <app-deltails [patient]="p"></app-deltails>
+                <app-deltails [patient]="p" [highLightValue]="NameSQ"></app-deltails>
             </td>
             <td>{{p.fileNo}}</td>
+            <td>
+                <ngb-highlight [result]="p.fileNo+''" [term]="FileNoSQ"></ngb-highlight>
+            </td>
             <td *ngIf="p.gender==1">Female</td>
             <td *ngIf="p.gender==0">Male</td>
-            <td>{{p.phoneNumber}}</td>
+
+            <td>
+                <ngb-highlight [result]="p.phoneNumber" [term]="PhoneSQ"></ngb-highlight>
+            </td>
 
             <td>
                 <app-delete-patient (refreshList)="refreshList()" [patient]="p"></app-delete-patient>
@@ -83,14 +89,14 @@
 <div>
     <ul class="pagination justify-content-center">
 
-        <div class="pagination " *ngIf="service.pager!= null&&service.pager.TotalPages>1">
-            <li class="page-item " *ngIf="service.pager.CurrentPage!=service.pager.StartPage">
+        <div class="pagination " *ngIf="pager!= null&&pager.TotalPages>1">
+            <li class="page-item " *ngIf="pager.CurrentPage!=pager.StartPage">
                 <a class="page-link" (click)="changePage(page-1)">Previous</a>
             </li>
 
-            <div *ngFor="let n of counter(service.pager.StartPage,service.pager.EndPage) ;let i = index">
+            <div *ngFor="let n of counter(pager.StartPage,pager.EndPage) ;let i = index">
 
-                <li class="page-item" *ngIf="(n)!=service.pager.CurrentPage; else activPage ">
+                <li class="page-item" *ngIf="(n)!=pager.CurrentPage; else activPage ">
                     <a class="page-link" (click)="changePage(n)">{{n}}</a>
                 </li>
 
@@ -103,7 +109,7 @@
             </div>
 
 
-            <li class="page-item" *ngIf="service.pager.CurrentPage!=service.pager.EndPage">
+            <li class="page-item" *ngIf="pager.CurrentPage!=pager.EndPage">
                 <a class="page-link" (click)="changePage(page+1)">Next</a>
             </li>
         </div>
