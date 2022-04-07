@@ -1,252 +1,308 @@
 <div class="d-flex justify-content-between">
+  <app-add-patient (refreshList)="refreshList()"> </app-add-patient>
 
-
-
-    <app-add-patient (refreshList)="refreshList()"> </app-add-patient>
-
-    <p>
-        <button type="button" class="btn btn-outline-primary" (click)=" collaps()">
-            <i class="bi bi-search"></i> Search
-        </button>
-    </p>
-
-
+  <p>
+    <button type="button" class="btn btn-outline-primary" (click)="collaps()">
+      <i class="bi bi-search"></i> Search
+    </button>
+  </p>
 </div>
 
 <div [(ngbCollapse)]="isCollapsed">
-    <div class="card">
-        <div class="card-body">
-            <form class="row">
-                <div class=" col-4">
-                    <label for="NameSQ" class="form-label">Name</label>
-                    <input type="text" placeholder="Name" [(ngModel)]="NameSQ" name="NameSQ" class="form-control"
-                        (keyup)="search()">
-                </div>
-
-                <div class=" col-3">
-                    <label for="FileNoSQ" class="form-label">FileNo</label>
-                    <input type="number" placeholder="FileNo" [(ngModel)]="FileNoSQ" name="FileNoSQ"
-                        class="form-control" (keyup)="search()">
-                </div>
-
-                <div class=" col-4">
-                    <label for="PhoneSQ" class="form-label">Phone</label>
-                    <input type="text" placeholder="Phone" [(ngModel)]="PhoneSQ" name="PhoneSQ" class="form-control"
-                        (keyup)="search()">
-                </div>
-                <div class=" col-1">
-                    <label class="form-label">Reset</label>
-                    <button class="btn btn-outline-danger form-control" (click)="clearSearch()">
-                        <i class="bi bi-arrow-clockwise"></i>
-                    </button>
-                </div>
-
-
-            </form>
+  <div class="card">
+    <div class="card-body">
+      <form class="row">
+        <div class="col-4">
+          <label for="NameSQ" class="form-label">Name</label>
+          <input
+            type="text"
+            placeholder="Name"
+            [(ngModel)]="NameSQ"
+            name="NameSQ"
+            class="form-control"
+            (keyup)="search()"
+          />
         </div>
+
+        <div class="col-3">
+          <label for="FileNoSQ" class="form-label">FileNo</label>
+          <input
+            type="number"
+            placeholder="FileNo"
+            [(ngModel)]="FileNoSQ"
+            name="FileNoSQ"
+            class="form-control"
+            (keyup)="search()"
+          />
+        </div>
+
+        <div class="col-4">
+          <label for="PhoneSQ" class="form-label">Phone</label>
+          <input
+            type="text"
+            placeholder="Phone"
+            [(ngModel)]="PhoneSQ"
+            name="PhoneSQ"
+            class="form-control"
+            (keyup)="search()"
+          />
+        </div>
+        <div class="col-1">
+          <label class="form-label">Reset</label>
+          <button
+            class="btn btn-outline-danger form-control"
+            (click)="clearSearch()"
+          >
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
-<table class="table  table-striped" *ngIf="(patients); else loading">
+<table class="table table-striped" *ngIf="patients; else loading">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">FileNo</th>
+      <th scope="col">Gender</th>
+      <th scope="col">phone</th>
 
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">FileNo</th>
-            <th scope="col">Gender</th>
-            <th scope="col">phone </th>
+      <th scope="col">Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of patients">
+      <td>
+        <app-deltails [patient]="p" [highLightValue]="NameSQ"></app-deltails>
+      </td>
 
-            <th scope="col">Option</th>
-        </tr>
-    </thead>
-    <tbody>
+      <td>
+        <ngb-highlight
+          [result]="p.fileNo + ''"
+          [term]="FileNoSQ"
+        ></ngb-highlight>
+      </td>
+      <td *ngIf="p.gender == 1">Female</td>
+      <td *ngIf="p.gender == 0">Male</td>
 
+      <td>
+        <ngb-highlight
+          [result]="p.phoneNumber"
+          [term]="PhoneSQ"
+        ></ngb-highlight>
+      </td>
 
-        <tr *ngFor="let p of patients">
-            <td>
-                <app-deltails [patient]="p" [highLightValue]="NameSQ"></app-deltails>
-            </td>
-            <td>{{p.fileNo}}</td>
-            <td>
-                <ngb-highlight [result]="p.fileNo+''" [term]="FileNoSQ"></ngb-highlight>
-            </td>
-            <td *ngIf="p.gender==1">Female</td>
-            <td *ngIf="p.gender==0">Male</td>
-
-            <td>
-                <ngb-highlight [result]="p.phoneNumber" [term]="PhoneSQ"></ngb-highlight>
-            </td>
-
-            <td>
-                <app-delete-patient (refreshList)="refreshList()" [patient]="p"></app-delete-patient>
-                <app-update-patient (refreshList)="refreshList()" [patient]="p"></app-update-patient>
-            </td>
-        </tr>
-
-
-    </tbody>
+      <td>
+        <app-delete-patient
+          (refreshList)="refreshList()"
+          [patient]="p"
+        ></app-delete-patient>
+        <app-update-patient
+          (refreshList)="refreshList()"
+          [patient]="p"
+        ></app-update-patient>
+      </td>
+    </tr>
+  </tbody>
 </table>
 <div>
-    <ul class="pagination justify-content-center">
+  <ul class="pagination float-start">
+    <ng-container *ngIf="pager != null && pager.TotalPages > 1">
+      <li
+        class="page-item"
+        *ngIf="pager.CurrentPage != pager.StartPage; else disabledPrevious"
+      >
+        <a class="page-link user-select-none" (click)="changePage(page - 1)"
+          >Previous</a
+        >
+      </li>
+      <ng-template #disabledPrevious>
+        <li class="page-item disabled">
+          <a class="page-link user-select-none">Previous</a>
+        </li>
+      </ng-template>
 
-        <div class="pagination " *ngIf="pager!= null&&pager.TotalPages>1">
-            <li class="page-item " *ngIf="pager.CurrentPage!=pager.StartPage">
-                <a class="page-link" (click)="changePage(page-1)">Previous</a>
-            </li>
+      <ng-container
+        *ngFor="let n of counter(pager.StartPage, pager.EndPage); let i = index"
+      >
+        <li class="page-item" *ngIf="n != pager.CurrentPage; else activPage">
+          <a class="page-link user-select-none" (click)="changePage(n)">{{
+            n
+          }}</a>
+        </li>
 
-            <div *ngFor="let n of counter(pager.StartPage,pager.EndPage) ;let i = index">
+        <ng-template #activPage>
+          <li class="page-item active">
+            <a class="page-link user-select-none" (click)="changePage(n)">{{
+              n
+            }}</a>
+          </li>
+        </ng-template>
+      </ng-container>
 
-                <li class="page-item" *ngIf="(n)!=pager.CurrentPage; else activPage ">
-                    <a class="page-link" (click)="changePage(n)">{{n}}</a>
-                </li>
-
-                <ng-template #activPage>
-                    <li class="page-item active">
-                        <a class="page-link" (click)="changePage(n)">{{n}}</a>
-                    </li>
-                </ng-template>
-
-            </div>
-
-
-            <li class="page-item" *ngIf="pager.CurrentPage!=pager.EndPage">
-                <a class="page-link" (click)="changePage(page+1)">Next</a>
-            </li>
-        </div>
-        <select class="form-select mx-2" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshList()">
-            <option [ngValue]="2">2 Items</option>
-            <option [ngValue]="5">5 Items</option>
-            <option [ngValue]="8">8 Items</option>
-        </select>
-
-    </ul>
-
+      <li
+        class="page-item"
+        *ngIf="pager.CurrentPage != pager.EndPage; else disabledNext"
+      >
+        <a class="page-link user-select-none" (click)="changePage(page + 1)"
+          >Next</a
+        >
+      </li>
+      <ng-template #disabledNext>
+        <li class="page-item disabled">
+          <a class="page-link user-select-none">Next</a>
+        </li>
+      </ng-template>
+    </ng-container>
+  </ul>
+  <select
+    class="form-select mx-2 float-end"
+    style="width: auto"
+    [(ngModel)]="pageSize"
+    (ngModelChange)="refreshList()"
+  >
+    <option [ngValue]="2">2 Items</option>
+    <option [ngValue]="5">5 Items</option>
+    <option [ngValue]="8">8 Items</option>
+  </select>
 </div>
 
 <ng-template #loading>
-    <table class="table  table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">FileNo</th>
-                <th scope="col">Gender</th>
-                <th scope="col">phone </th>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">FileNo</th>
+        <th scope="col">Gender</th>
+        <th scope="col">phone</th>
 
-                <th scope="col">Option</th>
-            </tr>
-        </thead>
-        <tbody>
+        <th scope="col">Option</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-8"></span>
+          </p>
+        </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-6"></span>
+          </p>
+        </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-5"></span>
+          </p>
+        </td>
 
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-12"></span>
+          </p>
+        </td>
 
+        <td>
+          <button type="button" class="btn btn-outline-primary m-1" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <button type="button" class="btn btn-outline-danger m-1" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </td>
+      </tr>
 
-            <tr>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-8"></span>
-                    </p>
-                </td>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-6"></span>
-                    </p>
-                </td>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-5"></span>
-                    </p>
-                </td>
+      <tr>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-12"></span>
+          </p>
+        </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-5"></span>
+          </p>
+        </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-6"></span>
+          </p>
+        </td>
 
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-12"></span>
-                    </p>
-                </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-8"></span>
+          </p>
+        </td>
 
-                <td>
-                    <button type="button" class="btn btn-outline-primary m-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-outline-danger m-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
+        <td>
+          <button type="button" class="btn btn-outline-primary m-1" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <button type="button" class="btn btn-outline-danger m-1" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-11"></span>
+          </p>
+        </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-9"></span>
+          </p>
+        </td>
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-5"></span>
+          </p>
+        </td>
 
+        <td>
+          <p class="placeholder-glow">
+            <span class="placeholder col-9"></span>
+          </p>
+        </td>
 
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-12"></span>
-                    </p>
-                </td>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-5"></span>
-                    </p>
-                </td>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-6"></span>
-                    </p>
-                </td>
-
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-8"></span>
-                    </p>
-                </td>
-
-                <td>
-                    <button type="button" class="btn btn-outline-primary m-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-outline-danger m-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
-
-
-
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-11"></span>
-                    </p>
-                </td>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-9"></span>
-                    </p>
-                </td>
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-5"></span>
-                    </p>
-                </td>
-
-                <td>
-                    <p class="placeholder-glow">
-                        <span class="placeholder col-9"></span>
-                    </p>
-                </td>
-
-                <td>
-                    <button type="button" class="btn btn-outline-primary m-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" class="btn btn-outline-danger m-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    </button>
-
-
-
-                </td>
-            </tr>
-
-
-        </tbody>
-    </table>
+        <td>
+          <button type="button" class="btn btn-outline-primary m-1" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <button type="button" class="btn btn-outline-danger m-1" disabled>
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </ng-template>
