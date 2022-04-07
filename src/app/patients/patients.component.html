@@ -157,16 +157,18 @@
       </ng-template>
     </ng-container>
   </ul>
-  <select
-    class="form-select mx-2 float-end"
-    style="width: auto"
-    [(ngModel)]="pageSize"
-    (ngModelChange)="refreshList()"
-  >
-    <option [ngValue]="2">2 Items</option>
-    <option [ngValue]="5">5 Items</option>
-    <option [ngValue]="8">8 Items</option>
-  </select>
+  <div class="float-end">
+    <select
+      class="form-select mx-2"
+      style="width: auto"
+      [(ngModel)]="pageSize"
+      (ngModelChange)="refreshList()"
+    >
+      <option [ngValue]="2">2 Items</option>
+      <option [ngValue]="5">5 Items</option>
+      <option [ngValue]="8">8 Items</option>
+    </select>
+  </div>
 </div>
 
 <ng-template #loading>

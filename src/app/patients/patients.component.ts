@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Patient } from './patient.model';
 import { PatientsAPIService } from '../patients-api.service';
 import { Pager } from '../Pager.model';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html',
@@ -17,7 +18,10 @@ export class PatientsComponent implements OnInit {
   patients!: Patient[] | null;
   pager!: Pager;
 
-  constructor(public service: PatientsAPIService) {}
+  constructor(
+    public service: PatientsAPIService,
+    private route: ActivatedRoute
+  ) {}
   collaps() {
     this.isCollapsed = !this.isCollapsed;
     this.NameSQ = null;

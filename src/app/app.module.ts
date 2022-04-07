@@ -14,6 +14,8 @@ import { PatientsAPIService } from './patients-api.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,6 +24,7 @@ import { ToastrModule } from 'ngx-toastr';
     AddPatientComponent,
     DeletePatientComponent,
     UpdatePatientComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
